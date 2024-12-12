@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas Fun!</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #004d99, #33ccff);
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 20px;
+            font-size: 3rem;
+        }
+        #game {
+            margin: 20px auto;
+            width: 90%;
+            max-width: 600px;
+        }
+        .snowflake {
+            position: fixed;
+            top: -50px;
+            font-size: 1.5rem;
+            color: white;
+            animation: fall 5s linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background: #ff3333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+        button:hover {
+            background: #cc0000;
+        }
+        #score {
+            font-size: 1.5rem;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Christmas Snowflake Catcher</h1>
+    <p id="instructions">Catch the snowflakes by clicking on them!</p>
+    <div id="game"></div>
+    <p id="score">Score: 0</p>
+    <button id="startGame">Start Game</button>
+
+    <script>
+        const gameArea = document.getElementById('game');
+        const scoreDisplay = document.getElementById('score');
+        const startButton = document.getElementById('startGame');
+        let score = 0;
+        let gameInterval;
+
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.textContent = '❄';
+            snowflake.classList.add('snowflake');
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.fontSize = Math.random() * 2 + 1 + 'rem';
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+
+            snowflake.addEventListener('click', () => {
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+                snowflake.remove();
+            });
+
+            gameArea.appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.remove();
+            }, 5000);
+        }
+
+        function startGame() {
+            score = 0;
+            scoreDisplay.textContent = `Score: ${score}`;
+            startButton.style.display = 'none';
+            gameInterval = setInterval(createSnowflake, 800);
+
+            setTimeout(() => {
+                clearInterval(gameInterval);
+                alert(`Game over! Your final score is ${score}.`);
+                startButton.style.display = 'inline';
+            }, 30000); // Game lasts 30 seconds
+        }
+
+        startButton.addEventListener('click', startGame);
+    </script>
+</body>
+</html>
